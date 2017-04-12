@@ -8,10 +8,9 @@ import { ChatService, SocketService } from './shared';
 })
 export class AppComponent {
 
+  messageList = [];
+
   constructor(private chatService: ChatService) {
-    chatService.messages.subscribe(msg => {
-      console.log(`Response from websocket: ${JSON.stringify(msg)}`);
-    });
   }
 
   private message = {
@@ -23,6 +22,12 @@ export class AppComponent {
     console.log('new message from client to websocket: ', this.message);
     this.chatService.messages.next(this.message);
     this.message.message = '';
+  }
+
+  ngOnInit() { 
+     this.chatService.messages.subscribe(msg => {
+      this.messageList.push(msg);
+    });
   }
 
 }
